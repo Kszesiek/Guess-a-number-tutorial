@@ -44,7 +44,7 @@ const StartGameScreen = props => {
         numberChosenFeedback = <Card style={styles.startGameCard}>
             <Text>You've chosen number:</Text>
             <NumberCard>{chosenNumber}</NumberCard>
-            <Button title='START GAME' color={colors.secondary} onPress={ () => { } } />
+            <Button title='START GAME' color={colors.secondary} onPress={ () => props.onStartGame(chosenNumber) } />
         </Card>
     }
 
