@@ -82,6 +82,7 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 10,
         alignItems: 'center',
+        backgroundColor: colors.bg_powder,
     },
     title: {
         fontSize: 22,

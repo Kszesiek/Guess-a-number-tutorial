@@ -20,11 +20,16 @@ const gameOverHandler = numberOfRounds => {
   setRoundsItTook(numberOfRounds);
 }
 
+const restartGame = () => {
+  setRoundsItTook(0);
+  setUserNumber(null);
+}
+
 let content = <StartGameScreen onStartGame={startGameHandler} />;
 if (userNumber && roundsItTook <= 0)
   content = <GameScreen userChoice={userNumber} onGameOver={gameOverHandler} />
 else if (roundsItTook > 0)
-  content = <EndGameScreen />
+  content = <EndGameScreen userNumber={userNumber} roundsItTook={roundsItTook} onRestart={restartGame} />
 
   return (
     <View style={styles.screen}>
