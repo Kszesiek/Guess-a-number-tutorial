@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { StyleSheet, Text, View, Button, Alert } from 'react-native';
 
 import colors from '../constants/colors';
@@ -19,11 +19,20 @@ const generateRandomInRange = (min, max, exclude) => {
 
 const GameScreen = props => {
     const [currentGuess, setCurrentGuess] = useState(generateRandomInRange(1, 100, props.userChoice));
+    const [round, setRound] = useState(0);
     const currentMin = useRef(1);
     const currentMax = useRef(99);
 
+    const { userChoice, onGameOver } = props;
+
+    useEffect(() => {
+        if (currentGuess === userChoice) {
+            onGameOver(round);
+        }
+    }, [currentGuess, userChoice, onGameOver]);
+
     const guessHandler = direction => {
-        if ( (direction === 'less' && currentGuess < props.userChoice) || (direction === 'more' && currentGuess > props.userChoice) || (currentGuess === props.userChoice) ) {
+        if ( (direction === 'less' && currentGuess < props.userChoice) || (direction === 'more' && currentGuess > props.userChoice) ) {
             Alert.alert('You sneaky little fox!', 'A ty żółwiku kłamczuszku! Nie wolno tak kłamczyć!', [
                 {text: 'No dobrze, juz nie będę...', style: 'cancel'}
             ]);
@@ -34,6 +43,7 @@ const GameScreen = props => {
             currentMin.current = currentGuess;
         }
         const nextNumber = generateRandomInRange(currentMin.current, currentMax.current, currentGuess);
+        setRound(curRounds => curRounds + 1);
         setCurrentGuess(nextNumber);
     };
 
@@ -44,10 +54,6 @@ const GameScreen = props => {
             <Card style={styles.buttonsCard}>
                 <View style={styles.button}><Button title="Mniej" color={colors.dark} onPress={() => guessHandler('less')} /></View>
                 <View style={styles.button}><Button title="Więcej" color={colors.dark} onPress={() => guessHandler('more')} /></View>
-            </Card>
-            <Card style={styles.buttonsCard}>
-                <Button title="Tak, to moja liczba!" color={colors.secondary} onPress={
-                    () => Alert.alert('Znam twoją liczbę!', 'Jakoś tak wyszło, że się dowiedziałem! Twoja liczba to ' + currentGuess + '!', [{text: 'Jak to, skąd możesz to wiedzieć?', style: 'default'}]) } />
             </Card>
         </View>
     )
