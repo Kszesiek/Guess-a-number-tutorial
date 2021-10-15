@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import React from 'react';
+import { StyleSheet, Text, View, Button, Image } from 'react-native';
 
 import colors from '../constants/colors';
 import NumberCard from '../components/NumberCard';
@@ -20,13 +20,21 @@ const EndGameScreen = props => {
         <View style={styles.screen}>
             <View style={{ flex: 1 }} />
             <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                <Text style={{ marginBottom: 10 }}>'Znam twoją liczbę!'</Text>
-                <Text>Twoja liczba to...</Text>
+                <Text style={textStyles.title}>'Znam twoją liczbę!'</Text>
+                <Text style={textStyles.standard}>Twoja liczba to...</Text>
                 <View style={styles.numberCard}><NumberCard>{props.userNumber}</NumberCard></View>
-                <Text>Zajęło to tylko {props.roundsItTook} {getRoundsString(props.roundsItTook)}.</Text>
+                <Text style={textStyles.standard}>Zajęło to tylko {props.roundsItTook} {getRoundsString(props.roundsItTook)}.</Text>
             </View>
             <View style={{ flex: 1 }} />
-            <View style={{ padding: 25 }}>
+            <View style={styles.imageView}>
+                <Image
+                 // source={require('../assets/images/fortune-teller.jpg')}
+                    source={{uri: 'https://wp.pl.aleteia.org/wp-content/uploads/sites/9/2020/06/web3-esoterism-witch-mystery-future-shutterstock_573327739.jpg'}}
+                    style={styles.image}
+                    resizeMode="cover"
+                    fadeDuration={500} />
+            </View>
+            <View style={styles.buttonView}>
                 <Button color={colors.main} onPress={props.onRestart} title="Zagraj jeszcze raz!" />
             </View>
         </View>
@@ -44,8 +52,38 @@ const styles = StyleSheet.create({
         backgroundColor: colors.bg_powder,
     },
     numberCard: {
-        marginVertical: 50,
-    }
+        marginVertical: 15,
+    },
+    image: {
+        width: '100%',
+        height: 200,
+    },
+    imageView: {
+        width: '100%',
+        height: 200,
+        borderRadius: 500,
+        overflow: 'hidden',
+    },
+    buttonView: {
+        minWidth: 100,
+        overflow: 'hidden',
+        borderRadius: 20,
+        margin: 25,
+    },
+});
+
+const textStyles = StyleSheet.create({
+    title: {
+        fontSize: 40,
+        marginVertical: 10,
+        color: colors.dark,
+        fontFamily: 'sacramento',
+    },
+    standard: {
+        fontFamily: 'sacramento',
+        fontSize: 30,
+        color: 'black',
+    },
 });
 
 export default EndGameScreen;

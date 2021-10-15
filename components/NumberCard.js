@@ -24,7 +24,8 @@ const styles = StyleSheet.create({
   },
   number: {
       color: 'white',
-      fontSize: 24,
+      fontSize: 44,
+      fontFamily: 'backslash',
 
   }
 });

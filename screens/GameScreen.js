@@ -42,19 +42,21 @@ const GameScreen = props => {
         } else if (direction == 'more') {
             currentMin.current = currentGuess;
         }
-        const nextNumber = generateRandomInRange(currentMin.current, currentMax.current, currentGuess);
+        const nextNumber = generateRandomInRange(currentMin.current, currentMax.current + 1, currentGuess);
         setRound(curRounds => curRounds + 1);
         setCurrentGuess(nextNumber);
     };
 
     return (
         <View style={styles.screen}>
-            <Text>Czy Twoja liczba to...</Text>
+            <View style={{flex: 2}} />
+            <Text style={{fontFamily: 'sacramento', fontSize: 40}} >Czy Twoja liczba to...</Text>
             <NumberCard>{currentGuess}</NumberCard>
             <Card style={styles.buttonsCard}>
-                <View style={styles.button}><Button title="Mniej" color={colors.dark} onPress={() => guessHandler('less')} /></View>
-                <View style={styles.button}><Button title="Więcej" color={colors.dark} onPress={() => guessHandler('more')} /></View>
+                <View style={styles.buttonView}><Button title="Mniej" color={colors.dark} onPress={() => guessHandler('less')} /></View>
+                <View style={styles.buttonView}><Button title="Więcej" color={colors.dark} onPress={() => guessHandler('more')} /></View>
             </Card>
+            <View style={{flex: 3}} />
         </View>
     )
 };
@@ -69,16 +71,16 @@ const styles = StyleSheet.create({
     },
     buttonsCard: {
         flexDirection: 'row',
-        width: 200,
+        width: 250,
         maxWidth: '80%',
         justifyContent: 'space-around',
-        marginTop: 20,
+        marginTop: 10,
         backgroundColor: colors.light,
     },
-    button: {
-        width: 90,
-        maxWidth: '90%',
-        paddingHorizontal: 10,
+    buttonView: {
+        minWidth: 100,
+        overflow: 'hidden',
+        borderRadius: 20,
     },
 });
 
