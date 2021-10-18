@@ -5,6 +5,7 @@ import Card from '../components/Card';
 import colors from '../constants/colors';
 import Input from '../components/Input';
 import NumberCard from '../components/NumberCard';
+import PrimaryButton from '../components/PrimaryButton';
 
 const StartGameScreen = props => {
 
@@ -44,10 +45,10 @@ const StartGameScreen = props => {
         numberChosenFeedback = <Card style={styles.startGameCard}>
             <Text style={{ paddingHorizontal: 10 }, textStyles.standard}>A więc Twoj wybór to...</Text>
             <NumberCard>{chosenNumber}</NumberCard>
-            <View style={styles.buttonView}><Button title='Rozpocznij grę' color={colors.secondary} onPress={() => props.onStartGame(chosenNumber)} /></View>
+            <PrimaryButton onPress={() => props.onStartGame(chosenNumber)}>Rozpocznij grę</PrimaryButton>
         </Card>
     }
-
+/* <View style={styles.buttonView}><Button title='Rozpocznij grę' color={colors.secondary} onPress={() => props.onStartGame(chosenNumber)} /></View> */
     return (
         <TouchableWithoutFeedback onPress={() => {
             Keyboard.dismiss();

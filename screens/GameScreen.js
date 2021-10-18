@@ -1,16 +1,17 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { StyleSheet, Text, View, Button, Alert } from 'react-native';
+import { StyleSheet, Text, View, Button, Alert, TouchableOpacity } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
 import colors from '../constants/colors';
 import NumberCard from '../components/NumberCard';
 import Card from '../components/Card';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
+import PrimaryButton from '../components/PrimaryButton';
 
 const generateRandomInRange = (min, max, exclude) => {
     min = Math.ceil(min);
     max = Math.floor(max);
 
-    const randomNumber = Math.floor(Math.random() * (max-min)) + min;
+    const randomNumber = Math.floor(Math.random() * (max - min)) + min;
     if (randomNumber === exclude)
         return generateRandomInRange(min, max, exclude);
     else
@@ -20,8 +21,8 @@ const generateRandomInRange = (min, max, exclude) => {
 const GameScreen = props => {
     const [currentGuess, setCurrentGuess] = useState(generateRandomInRange(1, 100, props.userChoice));
     const [round, setRound] = useState(0);
-    const currentMin = useRef(1);
-    const currentMax = useRef(99);
+    const currentMin = useRef(0);
+    const currentMax = useRef(100);
 
     const { userChoice, onGameOver } = props;
 
@@ -32,9 +33,9 @@ const GameScreen = props => {
     }, [currentGuess, userChoice, onGameOver]);
 
     const guessHandler = direction => {
-        if ( (direction === 'less' && currentGuess < props.userChoice) || (direction === 'more' && currentGuess > props.userChoice) ) {
+        if ((direction === 'less' && currentGuess < props.userChoice) || (direction === 'more' && currentGuess > props.userChoice)) {
             Alert.alert('You sneaky little fox!', 'A ty żółwiku kłamczuszku! Nie wolno tak kłamczyć!', [
-                {text: 'No dobrze, juz nie będę...', style: 'cancel'}
+                { text: 'No dobrze, juz nie będę...', style: 'cancel' }
             ]);
             return;
         } else if (direction === 'less') {
@@ -42,25 +43,37 @@ const GameScreen = props => {
         } else if (direction == 'more') {
             currentMin.current = currentGuess;
         }
-        const nextNumber = generateRandomInRange(currentMin.current, currentMax.current + 1, currentGuess);
+        const nextNumber = generateRandomInRange(currentMin.current + 1, currentMax.current, currentGuess);
         setRound(curRounds => curRounds + 1);
         setCurrentGuess(nextNumber);
     };
 
     return (
         <View style={styles.screen}>
-            <View style={{flex: 2}} />
-            <Text style={{fontFamily: 'sacramento', fontSize: 40}} >Czy Twoja liczba to...</Text>
+            <View style={{ flex: 2 }} />
+            <Text style={{ fontFamily: 'sacramento', fontSize: 40 }} >Czy Twoja liczba to...</Text>
             <NumberCard>{currentGuess}</NumberCard>
-            <Card style={styles.buttonsCard}>
-                <View style={styles.buttonView}><Button title="Mniej" color={colors.dark} onPress={() => guessHandler('less')} /></View>
-                <View style={styles.buttonView}><Button title="Więcej" color={colors.dark} onPress={() => guessHandler('more')} /></View>
-            </Card>
-            <View style={{flex: 3}} />
+            <View style={{ flexDirection: 'row' }}>
+                <TouchableOpacity onPress={() => guessHandler('less')} activeOpacity={0.75}>
+                    <Card style={styles.buttonsCard}>
+                        <Ionicons name="arrow-down-circle-outline" size={60} style={{ paddingLeft: 5 }} />
+                    </Card>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => guessHandler('more')} activeOpacity={0.75}>
+                    <Card style={{ ...styles.buttonsCard, backgroundColor: colors.main }}>
+                        <Ionicons name="arrow-up-circle-outline" size={60} style={{ paddingLeft: 5 }} />
+                    </Card>
+                </TouchableOpacity>
+            </View>
+
+
+            <View style={{ flex: 3 }} />
         </View>
     )
 };
 
+// <Button title="Mniej" color={colors.dark} onPress={() => guessHandler('less')} />
+// <Button title="Więcej" color={colors.dark} onPress={() => guessHandler('more')} />
 
 const styles = StyleSheet.create({
     screen: {
@@ -71,16 +84,15 @@ const styles = StyleSheet.create({
     },
     buttonsCard: {
         flexDirection: 'row',
-        width: 250,
-        maxWidth: '80%',
-        justifyContent: 'space-around',
-        marginTop: 10,
+        margin: 10,
+        borderRadius: 100,
         backgroundColor: colors.light,
     },
     buttonView: {
-        minWidth: 100,
+        minWidth: 50,
         overflow: 'hidden',
         borderRadius: 20,
+        alignItems: 'center',
     },
 });
 

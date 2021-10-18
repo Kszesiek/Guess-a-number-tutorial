@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Button, Image } from 'react-native';
 
 import colors from '../constants/colors';
 import NumberCard from '../components/NumberCard';
+import PrimaryButton from '../components/PrimaryButton';
 
 const EndGameScreen = props => {
 
@@ -35,12 +36,11 @@ const EndGameScreen = props => {
                     fadeDuration={500} />
             </View>
             <View style={styles.buttonView}>
-                <Button color={colors.main} onPress={props.onRestart} title="Zagraj jeszcze raz!" />
+                <PrimaryButton onPress={props.onRestart} >Zagraj jeszcze raz!</PrimaryButton>
             </View>
         </View>
     )
 };
-// Alert.alert('Znam twoją liczbę!', 'Jakoś tak wyszło, że się dowiedziałem! Twoja liczba to ' + currentGuess + '!', [{text: 'Jak to, skąd możesz to wiedzieć?', style: 'default'}])
 
 
 const styles = StyleSheet.create({
