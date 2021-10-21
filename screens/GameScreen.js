@@ -73,11 +73,11 @@ const GameScreen = props => {
                     </Card>
                 </TouchableOpacity>
             </View>
-            <View style={{ flex: 1 }} />
+            <View style={{ flex: 2 }} />
             <View style={styles.listContainer}>
                 <Text style={{
                     fontFamily: 'sacramento',
-                    fontSize: 40,
+                    fontSize: 36,
                     borderBottomWidth: 1,
                     borderColor: colors.dark,
                 }}
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     listContainer: {
-        flex: 4,
+        flex: 5,
         borderRadius: 30,
         backgroundColor: colors.light,
         alignItems: 'center',
@@ -125,6 +125,7 @@ const styles = StyleSheet.create({
         borderWidth: 5,
         padding: 5,
         width: '80%',
+        minHeight: 140,
     },
     list: {
         flexGrow: 1,

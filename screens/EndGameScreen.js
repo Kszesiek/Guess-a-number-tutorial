@@ -59,8 +59,9 @@ const styles = StyleSheet.create({
         height: 200,
     },
     imageView: {
+        flex: 5,
         width: '100%',
-        height: 200,
+        maxHeight: 200,
         borderRadius: 500,
         overflow: 'hidden',
     },
@@ -68,7 +69,7 @@ const styles = StyleSheet.create({
         minWidth: 100,
         overflow: 'hidden',
         borderRadius: 20,
-        margin: 25,
+        margin: 20,
     },
 });
 
@@ -83,6 +84,7 @@ const textStyles = StyleSheet.create({
         fontFamily: 'sacramento',
         fontSize: 30,
         color: 'black',
+        marginVertical: -8,
     },
 });
 

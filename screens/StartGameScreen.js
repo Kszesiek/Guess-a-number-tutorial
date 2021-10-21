@@ -55,7 +55,7 @@ const StartGameScreen = props => {
         }}>
             <View style={styles.screen}>
                 <Text style={textStyles.title}>Rozpocznij grę!</Text>
-                <Card style={styles.inputContainer}>
+                <Card style={styles.inputCard}>
                     <Text style={textStyles.standard}>Wybierz liczbę:</Text>
                     <Input
                         style={styles.textInput}
@@ -87,9 +87,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: colors.bg_powder,
     },
-    inputContainer: {
-        width: 270,
-        maxWidth: '80%',
+    inputCard: {
+        minWidth: 250,
+        width: '75%',
+        maxWidth: '90%',
         alignItems: 'center',
         backgroundColor: colors.light,
     },
@@ -105,12 +106,16 @@ const styles = StyleSheet.create({
         borderRadius: 20,
     },
     textInput: {
-        width: 40,
+        width: 70,
+        height: 60,
         textAlign: 'center',
+        fontFamily: 'backslash',
+        fontSize: 50,
     },
     startGameCard: {
         alignItems: 'center',
         marginTop: 20,
+        maxWidth: '90%',
         backgroundColor: colors.light,
     },
 });
@@ -118,7 +123,7 @@ const styles = StyleSheet.create({
 const textStyles = StyleSheet.create({
     title: {
         fontSize: 40,
-        marginVertical: 10,
+        marginVertical: 5,
         color: colors.dark,
         fontFamily: 'sacramento',
     },

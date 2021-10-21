@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
   header: {
     backgroundColor: '#DDD', // default color, usually overwritten
     width: '100%',
-    height: 100,
+    height: 90,
     paddingTop: 30,
     alignItems: 'center',
     justifyContent: 'center',
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
       color: 'black',
       fontSize: 36,
       fontFamily: 'back-to-black',
-      height: 45,
+      height: '100%',
   }
 });
 
