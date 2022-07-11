@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, Image } from 'react-native';
+import {StyleSheet, Text, View, Image} from 'react-native';
 
 import colors from '../constants/colors';
 import NumberCard from '../components/NumberCard';
@@ -29,7 +29,6 @@ const EndGameScreen = props => {
             <View style={{ flex: 1 }} />
             <View style={styles.imageView}>
                 <Image
-                 // source={require('../assets/images/fortune-teller.jpg')}
                     source={{uri: 'https://wp.pl.aleteia.org/wp-content/uploads/sites/9/2020/06/web3-esoterism-witch-mystery-future-shutterstock_573327739.jpg'}}
                     style={styles.image}
                     resizeMode="cover"
@@ -53,6 +52,7 @@ const styles = StyleSheet.create({
     },
     numberCard: {
         marginVertical: 15,
+        minWidth: 75,
     },
     image: {
         width: '100%',

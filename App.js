@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import AppLoading from 'expo-app-loading';
+import React, {useCallback, useEffect, useState} from 'react';
+import { StyleSheet, View } from 'react-native';
+// import AppLoading from 'expo-app-loading';
+import * as SplashScreen from 'expo-splash-screen';
 import * as Font from 'expo-font';
 
 import Header from './components/Header';
@@ -8,26 +9,51 @@ import StartGameScreen from './screens/StartGameScreen';
 import GameScreen from './screens/GameScreen';
 import EndGameScreen from './screens/EndGameScreen';
 
-const fetchFonts = () => {
-  return Font.loadAsync({
+async function fetchFonts () {
+  await Font.loadAsync({
     'back-to-black': require('./assets/fonts/BackToBlackDemo.ttf'), // titles and stuff
-    'backslash': require('./assets/fonts/backslash.otf'),      // numbers
+    'backslash': require('./assets/fonts/backslash.ttf'),      // numbers
     'sacramento': require('./assets/fonts/sacramento.ttf'),    // default
   });
 }
 
 export default function App() {
-
   const [userNumber, setUserNumber] = useState();
   const [roundsItTook, setRoundsItTook] = useState(0);
   const [fontsReady, setFontsReady] = useState(false);
 
-  if (!fontsReady)
-    return <AppLoading
-      startAsync={fetchFonts}
-      onFinish={() => setFontsReady(true)}
-      onError={(err) => console.log(err)}
-    />;
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsReady) {
+      // This tells the splash screen to hide immediately! If we call this after
+      // `setAppIsReady`, then we may see a blank screen while the app is
+      // loading its initial state and rendering its first pixels. So instead,
+      // we hide the splash screen once we know the root view has already
+      // performed layout.
+      await SplashScreen.hideAsync();
+    }
+  }, [fontsReady]);
+
+  useEffect(() => {
+    async function prepare() {
+      try {
+        // Keep the splash screen visible while we fetch resources
+        await SplashScreen.preventAutoHideAsync();
+        // Pre-load fonts, make any API calls you need to do here
+        await fetchFonts();
+
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        // Tell the application to render
+        setFontsReady(true);
+      }
+    }
+    prepare();
+  }, []);
+
+  if (!fontsReady) {
+    return null;
+  }
 
   const startGameHandler = selectedNumber => {
     setUserNumber(selectedNumber);
@@ -50,10 +76,13 @@ export default function App() {
     content = <EndGameScreen userNumber={userNumber} roundsItTook={roundsItTook} onRestart={restartGame} />
 
   return (
-    <View style={styles.screen}>
-      <Header title="Guess a number!" />
-      {content}
-    </View>
+      <View
+        style={styles.screen}
+        onLayout={onLayoutRootView}
+      >
+        <Header title="Guess a number!" />
+        {content}
+      </View>
   );
 }
 

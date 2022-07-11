@@ -1,9 +1,7 @@
 export default {
-    main:      '#f7287b',
-    light:     '#ff68aa',
-    dark:      '#be004f',
-    bg_powder: '#ffe5ec',//'#fee8e5',
-    powder:    '#ffb2d0',
-    secondary: '#c717fc',
-    
+    main:      '#1856ff',
+    light:     '#7182ff',
+    dark:      '#002ecb',
+    bg_powder: '#dbe3ff',//'#fee8e5',
+    powder:    '#a8b1ff',
 };

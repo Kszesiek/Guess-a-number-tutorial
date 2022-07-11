@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { StyleSheet, Text, View, Alert, TouchableOpacity, ScrollView, FlatList } from 'react-native';
+import { StyleSheet, Text, View, Alert, TouchableOpacity, FlatList } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 import colors from '../constants/colors';
@@ -42,13 +42,13 @@ const GameScreen = props => {
 
     const guessHandler = direction => {
         if ((direction === 'less' && currentGuess < props.userChoice) || (direction === 'more' && currentGuess > props.userChoice)) {
-            Alert.alert('You sneaky little fox!', 'A ty żółwiku kłamczuszku! Nie wolno tak kłamczyć!', [
-                { text: 'No dobrze, juz nie będę...', style: 'cancel' }
+            Alert.alert('You sneaky little fox!', 'Nie wolno tak kłamać!', [
+                { text: 'No dobrze, już nie będę...', style: 'cancel' }
             ]);
             return;
         } else if (direction === 'less') {
             currentMax.current = currentGuess;
-        } else if (direction == 'more') {
+        } else if (direction === 'more') {
             currentMin.current = currentGuess;
         }
         const nextNumber = generateRandomInRange(currentMin.current, currentMax.current, currentGuess);
