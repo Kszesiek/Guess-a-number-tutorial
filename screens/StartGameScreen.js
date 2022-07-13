@@ -1,11 +1,24 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Button, TouchableWithoutFeedback, Keyboard, Alert, ScrollView, KeyboardAvoidingView } from 'react-native';
+import {
+    StyleSheet,
+    Text,
+    View,
+    Button,
+    TouchableWithoutFeedback,
+    Keyboard,
+    Alert,
+    ScrollView,
+    KeyboardAvoidingView,
+    Dimensions
+} from 'react-native';
 import Card from '../components/Card';
 
 import colors from '../constants/colors';
 import Input from '../components/Input';
 import NumberCard from '../components/NumberCard';
 import PrimaryButton from '../components/PrimaryButton';
+
+const deviceWidth = Dimensions.get('window').width;
 
 const StartGameScreen = props => {
 
@@ -50,7 +63,7 @@ const StartGameScreen = props => {
     }
 /* <View style={styles.buttonView}><Button title='Rozpocznij grę' color={colors.secondary} onPress={() => props.onStartGame(chosenNumber)} /></View> */
     return (
-        <ScrollView>
+        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
             {/*style={styles.background}*/}
             <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={30 }>
                 <TouchableWithoutFeedback onPress={() => {
@@ -141,7 +154,7 @@ const textStyles = StyleSheet.create({
     },
     standard: {
         fontFamily: 'sacramento',
-        fontSize: 30,
+        fontSize: deviceWidth > 380 ? 30 : 26,
         color: 'black',
     },
 });

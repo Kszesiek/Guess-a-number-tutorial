@@ -1,9 +1,11 @@
 import React from 'react';
-import {StyleSheet, Text, View, Image} from 'react-native';
+import {StyleSheet, Text, View, Image, Dimensions} from 'react-native';
 
 import colors from '../constants/colors';
 import NumberCard from '../components/NumberCard';
 import PrimaryButton from '../components/PrimaryButton';
+
+const deviceWidth = Dimensions.get('window').width;
 
 const EndGameScreen = props => {
 
@@ -19,7 +21,7 @@ const EndGameScreen = props => {
 
     return (
         <View style={styles.screen}>
-            <View style={{ flex: 1 }} />
+            <View style={{ flex: deviceWidth > 380 ? 1 : 0 }} />
             <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                 <Text style={textStyles.title}>'Znam twoją liczbę!'</Text>
                 <Text style={textStyles.standard}>Twoja liczba to...</Text>

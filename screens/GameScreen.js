@@ -1,10 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { StyleSheet, Text, View, Alert, TouchableOpacity, FlatList } from 'react-native';
+import { StyleSheet, Text, View, Alert, TouchableOpacity, FlatList, Dimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 import colors from '../constants/colors';
 import NumberCard from '../components/NumberCard';
 import Card from '../components/Card';
+
+const deviceWidth = Dimensions.get('window').width;
 
 const renderListItem = (listLength, itemData) => (
     <View style={styles.listItem}>
@@ -59,29 +61,23 @@ const GameScreen = props => {
     return (
         <View style={styles.screen}>
             <View style={{ flex: 1 }} />
-            <Text style={{ fontFamily: 'sacramento', fontSize: 40 }} >Czy Twoja liczba to...</Text>
+            <Text style={styles.topText} >Czy Twoja liczba to...</Text>
             <NumberCard>{currentGuess}</NumberCard>
             <View style={{ flexDirection: 'row' }}>
                 <TouchableOpacity onPress={() => guessHandler('less')} activeOpacity={0.75}>
                     <Card style={styles.buttonsCard}>
-                        <Ionicons name="arrow-down-circle-outline" size={60} style={{ paddingLeft: 5 }} />
+                        <Ionicons name="arrow-down-circle-outline" size={deviceWidth > 380 ? 60 : 50} style={{ paddingLeft: 5 }} />
                     </Card>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => guessHandler('more')} activeOpacity={0.75}>
                     <Card style={{ ...styles.buttonsCard, backgroundColor: colors.main }}>
-                        <Ionicons name="arrow-up-circle-outline" size={60} style={{ paddingLeft: 5 }} />
+                        <Ionicons name="arrow-up-circle-outline" size={deviceWidth > 380 ? 60 : 50} style={{ paddingLeft: 5 }} />
                     </Card>
                 </TouchableOpacity>
             </View>
             <View style={{ flex: 2 }} />
             <View style={styles.listContainer}>
-                <Text style={{
-                    fontFamily: 'sacramento',
-                    fontSize: 36,
-                    borderBottomWidth: 1,
-                    borderColor: colors.dark,
-                }}
-                >Historia zgadywania</Text>
+                <Text style={styles.guessingHistoryText}>Historia zgadywania</Text>
                 {/* <ScrollView contentContainerStyle={styles.list}>
                     {pastGuesses.map((guess, index) => (renderListItem(guess, pastGuesses.length - index)))}
                 </ScrollView> */}
@@ -116,7 +112,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     listContainer: {
-        flex: 5,
+        flex: deviceWidth > 380 ? 5 : 10,
         borderRadius: 30,
         backgroundColor: colors.light,
         alignItems: 'center',
@@ -126,6 +122,7 @@ const styles = StyleSheet.create({
         padding: 5,
         width: '80%',
         minHeight: 140,
+        opacity: 0.8,
     },
     list: {
         flexGrow: 1,
@@ -146,6 +143,16 @@ const styles = StyleSheet.create({
         color: colors.dark,
         fontFamily: 'backslash',
         fontSize: 20,
+    },
+    topText: {
+        fontFamily: 'sacramento',
+        fontSize: deviceWidth > 380 ? 40 : 30
+    },
+    guessingHistoryText: {
+        fontFamily: 'sacramento',
+        fontSize: deviceWidth > 380 ? 36 : 32,
+        borderBottomWidth: 1,
+        borderColor: colors.dark,
     },
 });
 
