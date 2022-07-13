@@ -50,7 +50,8 @@ const StartGameScreen = props => {
     }
 /* <View style={styles.buttonView}><Button title='Rozpocznij grę' color={colors.secondary} onPress={() => props.onStartGame(chosenNumber)} /></View> */
     return (
-        <ScrollView style={styles.background}>
+        <ScrollView>
+            {/*style={styles.background}*/}
             <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={30 }>
                 <TouchableWithoutFeedback onPress={() => {
                     Keyboard.dismiss();
@@ -92,6 +93,7 @@ const styles = StyleSheet.create({
     },
     background: {
         backgroundColor: colors.bg_powder,
+
     },
     inputCard: {
         minWidth: 250,
@@ -99,6 +101,7 @@ const styles = StyleSheet.create({
         maxWidth: '90%',
         alignItems: 'center',
         backgroundColor: colors.light,
+        opacity: 0.9,
     },
     buttonContainer: {
         flexDirection: 'row',
@@ -125,6 +128,7 @@ const styles = StyleSheet.create({
         width: '75%',
         maxWidth: '90%',
         backgroundColor: colors.light,
+        opacity: 0.8,
     },
 });
 

@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import { StyleSheet, View } from 'react-native';
-// import AppLoading from 'expo-app-loading';
+import { StyleSheet, View, ImageBackground, SafeAreaView } from 'react-native';
+import { LinearGradient } from "expo-linear-gradient";
 import * as SplashScreen from 'expo-splash-screen';
 import * as Font from 'expo-font';
 
@@ -8,6 +8,7 @@ import Header from './components/Header';
 import StartGameScreen from './screens/StartGameScreen';
 import GameScreen from './screens/GameScreen';
 import EndGameScreen from './screens/EndGameScreen';
+import colors from "./constants/colors";
 
 async function fetchFonts () {
   await Font.loadAsync({
@@ -80,8 +81,14 @@ export default function App() {
         style={styles.screen}
         onLayout={onLayoutRootView}
       >
-        <Header title="Guess a number!" />
-        {content}
+        <LinearGradient style={{flex: 1}} colors={[colors.main, colors.bg_powder, colors.bg_powder, colors.bg_powder, colors.powder]}>
+          <ImageBackground source={require('./assets/images/dices.jpg')} style={{flex: 1}} resizeMode={"cover"} imageStyle={styles.backgroundImage}>
+            <SafeAreaView style={styles.screen}>
+              <Header title="Guess a number!" />
+              {content}
+            </SafeAreaView>
+          </ImageBackground>
+        </LinearGradient>
       </View>
   );
 }
@@ -89,5 +96,8 @@ export default function App() {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
+  },
+  backgroundImage: {
+    opacity: 0.3,
   },
 });

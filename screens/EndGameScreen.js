@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
         padding: 10,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: colors.bg_powder,
+        // backgroundColor: colors.bg_powder,
     },
     numberCard: {
         marginVertical: 15,
