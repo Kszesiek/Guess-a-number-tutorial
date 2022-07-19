@@ -1,7 +1,9 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Dimensions } from 'react-native';
 
 import colors from '../constants/colors';
+
+const deviceSize = Math.min(Dimensions.get("window").width, Dimensions.get("screen").height)
 
 const NumberCard = props => {
     return (
@@ -24,7 +26,7 @@ const styles = StyleSheet.create({
   },
   number: {
       color: 'white',
-      fontSize: 44,
+      fontSize: deviceSize > 380 ? 44 : 38,
       fontFamily: 'backslash',
 
   }

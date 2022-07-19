@@ -105,7 +105,7 @@ const StartGameScreen = props => {
 
     return (
         <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-            <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={30 }>
+            <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={ 30 }>
                 <TouchableWithoutFeedback onPress={() => {
                     Keyboard.dismiss();
                 }}>
@@ -125,6 +125,7 @@ const styles = StyleSheet.create({
     screen: {
         flex: 1,
         padding: 10,
+        marginTop: -10,
         alignItems: 'center',
     },
     background: {
@@ -178,6 +179,7 @@ const textStyles = StyleSheet.create({
         fontFamily: 'sacramento',
         fontSize: 30,  // overwritten in code (screen dimensions considered)
         color: 'black',
+        marginBottom: -5,  // because of the font style...
     },
 });
 

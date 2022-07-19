@@ -1,6 +1,7 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import { StyleSheet, View, ImageBackground, SafeAreaView } from 'react-native';
+import {StyleSheet, View, ImageBackground, SafeAreaView} from 'react-native';
 import { LinearGradient } from "expo-linear-gradient";
+import { StatusBar } from "expo-status-bar";
 import * as SplashScreen from 'expo-splash-screen';
 import * as Font from 'expo-font';
 
@@ -77,19 +78,22 @@ export default function App() {
     content = <EndGameScreen userNumber={userNumber} roundsItTook={roundsItTook} onRestart={restartGame} />
 
   return (
-      <View
-        style={styles.screen}
-        onLayout={onLayoutRootView}
-      >
-        <LinearGradient style={{flex: 1}} colors={[colors.main, colors.bg_powder, colors.bg_powder, colors.bg_powder, colors.powder]}>
-          <ImageBackground source={require('./assets/images/dices.jpg')} style={{flex: 1}} resizeMode={"cover"} imageStyle={styles.backgroundImage}>
-            <SafeAreaView style={styles.screen}>
-              <Header title="Guess a number!" />
-              {content}
-            </SafeAreaView>
-          </ImageBackground>
-        </LinearGradient>
-      </View>
+      <>
+        <StatusBar style="dark" />
+        <View
+            style={styles.screen}
+            onLayout={onLayoutRootView}
+        >
+          <LinearGradient style={{flex: 1}} colors={[colors.main, colors.bg_powder, colors.bg_powder, colors.bg_powder, colors.powder]}>
+            <ImageBackground source={require('./assets/images/dices.jpg')} style={{flex: 1}} resizeMode={"cover"} imageStyle={styles.backgroundImage}>
+              <SafeAreaView style={styles.screen}>
+                <Header title="Guess a number!" />
+                {content}
+              </SafeAreaView>
+            </ImageBackground>
+          </LinearGradient>
+        </View>
+      </>
   );
 }
 
