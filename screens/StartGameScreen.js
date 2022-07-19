@@ -9,7 +9,7 @@ import {
     Alert,
     ScrollView,
     KeyboardAvoidingView,
-    Dimensions
+    useWindowDimensions,
 } from 'react-native';
 import Card from '../components/Card';
 
@@ -18,13 +18,11 @@ import Input from '../components/Input';
 import NumberCard from '../components/NumberCard';
 import PrimaryButton from '../components/PrimaryButton';
 
-const deviceWidth = Dimensions.get('window').width;
-
 const StartGameScreen = props => {
-
     const [enteredNumber, setEnteredNumber] = useState('');
     const [confirmed, setConfirmed] = useState(false);
     const [chosenNumber, setChosenNumber] = useState();
+    const window = useWindowDimensions();
 
     const numberInputHandler = enteredValue => {
         setEnteredNumber(enteredValue.replace(/\D/g, ''));
@@ -56,39 +54,64 @@ const StartGameScreen = props => {
 
     if (confirmed) {
         numberChosenFeedback = <Card style={styles.startGameCard}>
-            <Text style={{ paddingHorizontal: 10, ...textStyles.standard}}>A więc Twoj wybór to...</Text>
+            <Text style={{ paddingHorizontal: 10, ...textStyles.standard, fontSize: window.width > 380 ? 30 : 26}}>A więc Twoj wybór to...</Text>
             <NumberCard>{chosenNumber}</NumberCard>
             <PrimaryButton onPress={() => props.onStartGame(chosenNumber)}>Rozpocznij grę</PrimaryButton>
         </Card>
     }
-/* <View style={styles.buttonView}><Button title='Rozpocznij grę' color={colors.secondary} onPress={() => props.onStartGame(chosenNumber)} /></View> */
+
+    let content_primary = (
+        <View style={styles.screen}>
+            <Card style={styles.inputCard}>
+                <Text style={textStyles.standard}>Wybierz liczbę:</Text>
+                <Input
+                    style={styles.textInput}
+                    maxLength={2}
+                    keyboardType='number-pad'
+                    blurOnSubmit
+                    onChangeText={numberInputHandler}
+                    value={enteredNumber}
+                />
+                <View style={styles.buttonContainer}>
+                    <View style={{flex: 1}} />
+                    <View style={styles.buttonView}><Button title="Reset" color={colors.dark} onPress={resetInputHandler} /></View>
+                    <View style={{flex: 1}} />
+                    <View style={styles.buttonView}><Button title="Potwierdź" color={colors.main} onPress={confirmInputHandler} /></View>
+                    <View style={{flex: 1}} />
+                </View>
+            </Card>
+        </View>
+    );
+
+    let content;
+
+    if (window.height > window.width) {
+        content = (
+            <View style={styles.screen}>
+                <View style={{ flex: 1 }} />
+                {content_primary}
+                {numberChosenFeedback}
+                <View style={{ flex: 2 }} />
+            </View>
+        )
+    } else {
+        content = (
+            <View style={{flex: 1, flexDirection: "row"}}>
+                {content_primary}
+                {numberChosenFeedback}
+            </View>
+        )
+    }
+
     return (
         <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-            {/*style={styles.background}*/}
             <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={30 }>
                 <TouchableWithoutFeedback onPress={() => {
                     Keyboard.dismiss();
                 }}>
                     <View style={styles.screen}>
-                        <View style={{ flex: 1 }} />
                         <Text style={textStyles.title}>Rozpocznij grę!</Text>
-                        <Card style={styles.inputCard}>
-                            <Text style={textStyles.standard}>Wybierz liczbę:</Text>
-                            <Input
-                                style={styles.textInput}
-                                maxLength={2}
-                                keyboardType='number-pad'
-                                blurOnSubmit
-                                onChangeText={numberInputHandler}
-                                value={enteredNumber}
-                            />
-                            <View style={styles.buttonContainer}>
-                                <View style={styles.buttonView}><Button title="Reset" color={colors.dark} onPress={resetInputHandler} /></View>
-                                <View style={styles.buttonView}><Button title="Potwierdź" color={colors.main} onPress={confirmInputHandler} /></View>
-                            </View>
-                        </Card>
-                        {numberChosenFeedback}
-                        <View style={{ flex: 2 }} />
+                        {content}
                         {/* <Text style={textStyles.title}>zażółć gęślą jaźń</Text> */}
                     </View>
                 </TouchableWithoutFeedback>
@@ -119,8 +142,6 @@ const styles = StyleSheet.create({
     buttonContainer: {
         flexDirection: 'row',
         width: '100%',
-        justifyContent: 'space-between',
-        paddingHorizontal: 15,
     },
     buttonView: {
         minWidth: 100,
@@ -135,10 +156,11 @@ const styles = StyleSheet.create({
         fontSize: 50,
     },
     startGameCard: {
+        flex: 1,
         alignItems: 'center',
-        marginTop: 20,
-        minWidth: 250,
-        width: '75%',
+        // marginTop: 20,
+        // minWidth: 250,
+        // width: '75%',
         maxWidth: '90%',
         backgroundColor: colors.light,
         opacity: 0.8,
@@ -154,7 +176,7 @@ const textStyles = StyleSheet.create({
     },
     standard: {
         fontFamily: 'sacramento',
-        fontSize: deviceWidth > 380 ? 30 : 26,
+        fontSize: 30,  // overwritten in code (screen dimensions considered)
         color: 'black',
     },
 });

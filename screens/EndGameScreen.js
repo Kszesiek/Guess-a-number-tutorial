@@ -1,13 +1,12 @@
 import React from 'react';
-import {StyleSheet, Text, View, Image, Dimensions} from 'react-native';
+import {StyleSheet, Text, View, Image, useWindowDimensions} from 'react-native';
 
 import colors from '../constants/colors';
 import NumberCard from '../components/NumberCard';
 import PrimaryButton from '../components/PrimaryButton';
 
-const deviceWidth = Dimensions.get('window').width;
-
 const EndGameScreen = props => {
+    const window = useWindowDimensions();
 
     const getRoundsString = roundsItTook => {
         if (roundsItTook === 1)
@@ -21,12 +20,12 @@ const EndGameScreen = props => {
 
     return (
         <View style={styles.screen}>
-            <View style={{ flex: deviceWidth > 380 ? 1 : 0 }} />
+            <View style={{ flex: window.width > 380 ? 1 : 0 }} />
             <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                 <Text style={textStyles.title}>'Znam twoją liczbę!'</Text>
-                <Text style={textStyles.standard}>Twoja liczba to...</Text>
-                <View style={styles.numberCard}><NumberCard>{props.userNumber}</NumberCard></View>
-                <Text style={textStyles.standard}>Zajęło to tylko {props.roundsItTook} {getRoundsString(props.roundsItTook)}.</Text>
+                <Text style={{...textStyles.standard, marginVertical: window.height > 400 ? -8 : -14}}>Twoja liczba to...</Text>
+                <View style={{...styles.numberCard, marginVertical: window.height > 400 ? 15 : 5}}><NumberCard>{props.userNumber}</NumberCard></View>
+                <Text style={{...textStyles.standard, marginVertical: window.height > 400 ? -8 : -14}}>Zajęło to tylko {props.roundsItTook} {getRoundsString(props.roundsItTook)}.</Text>
             </View>
             <View style={{ flex: 1 }} />
             <View style={styles.imageView}>
@@ -86,7 +85,7 @@ const textStyles = StyleSheet.create({
         fontFamily: 'sacramento',
         fontSize: 30,
         color: 'black',
-        marginVertical: -8,
+        marginVertical: -8,  // because of the font style...
     },
 });
 

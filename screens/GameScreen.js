@@ -1,12 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { StyleSheet, Text, View, Alert, TouchableOpacity, FlatList, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, Alert, TouchableOpacity, FlatList, useWindowDimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 import colors from '../constants/colors';
 import NumberCard from '../components/NumberCard';
 import Card from '../components/Card';
 
-const deviceWidth = Dimensions.get('window').width;
+// const deviceWidth = Dimensions.get('window').width;
 
 const renderListItem = (listLength, itemData) => (
     <View style={styles.listItem}>
@@ -27,14 +27,13 @@ const generateRandomInRange = (min, max, exclude) => {
         return randomNumber;
 }
 
-const GameScreen = props => {
-    const initialGuess = generateRandomInRange(1, 100, props.userChoice);
+const GameScreen = ({ userChoice, onGameOver }) => {
+    const initialGuess = generateRandomInRange(1, 100, userChoice);
     const [currentGuess, setCurrentGuess] = useState(initialGuess);
     const [pastGuesses, setPastGuesses] = useState([initialGuess.toString()]);
     const currentMin = useRef(0);
     const currentMax = useRef(100);
-
-    const { userChoice, onGameOver } = props;
+    const window = useWindowDimensions();
 
     useEffect(() => {
         if (currentGuess === userChoice) {
@@ -43,7 +42,7 @@ const GameScreen = props => {
     }, [currentGuess, userChoice, onGameOver]);
 
     const guessHandler = direction => {
-        if ((direction === 'less' && currentGuess < props.userChoice) || (direction === 'more' && currentGuess > props.userChoice)) {
+        if ((direction === 'less' && currentGuess < userChoice) || (direction === 'more' && currentGuess > userChoice)) {
             Alert.alert('You sneaky little fox!', 'Nie wolno tak kłamać!', [
                 { text: 'No dobrze, już nie będę...', style: 'cancel' }
             ]);
@@ -58,29 +57,32 @@ const GameScreen = props => {
         setCurrentGuess(nextNumber);
     };
 
-    return (
-        <View style={styles.screen}>
-            <View style={{ flex: 1 }} />
-            <Text style={styles.topText} >Czy Twoja liczba to...</Text>
+    let content_primary = (
+        <View style={styles.screen_primary}>
+            <Text style={{...styles.topText, fontSize: Math.min(window.width, window.height) > 380 ? 40 : 36}} >Czy Twoja liczba to...</Text>
             <NumberCard>{currentGuess}</NumberCard>
             <View style={{ flexDirection: 'row' }}>
                 <TouchableOpacity onPress={() => guessHandler('less')} activeOpacity={0.75}>
                     <Card style={styles.buttonsCard}>
-                        <Ionicons name="arrow-down-circle-outline" size={deviceWidth > 380 ? 60 : 50} style={{ paddingLeft: 5 }} />
+                        <Ionicons name="arrow-down-circle-outline" size={window.width > 380 ? 60 : 50} style={{ paddingLeft: 5 }} />
                     </Card>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => guessHandler('more')} activeOpacity={0.75}>
                     <Card style={{ ...styles.buttonsCard, backgroundColor: colors.main }}>
-                        <Ionicons name="arrow-up-circle-outline" size={deviceWidth > 380 ? 60 : 50} style={{ paddingLeft: 5 }} />
+                        <Ionicons name="arrow-up-circle-outline" size={window.width > 380 ? 60 : 50} style={{ paddingLeft: 5 }} />
                     </Card>
                 </TouchableOpacity>
             </View>
-            <View style={{ flex: 2 }} />
-            <View style={styles.listContainer}>
-                <Text style={styles.guessingHistoryText}>Historia zgadywania</Text>
+        </View>
+    )
+
+    let content_secondary = (
+        <View style={styles.screen_secondary}>
+            <View style={{...styles.listContainer, flex: window.width > 380 ? 5 : 10,}}>
+                <Text style={{...styles.guessingHistoryText, fontSize: Math.min(window.width, window.height) > 380 ? 36 : 32}}>Historia zgadywania</Text>
                 {/* <ScrollView contentContainerStyle={styles.list}>
-                    {pastGuesses.map((guess, index) => (renderListItem(guess, pastGuesses.length - index)))}
-                </ScrollView> */}
+                        {pastGuesses.map((guess, index) => (renderListItem(guess, pastGuesses.length - index)))}
+                    </ScrollView> */}
                 <FlatList
                     data={pastGuesses}
                     keyExtractor={(item) => item}
@@ -90,14 +92,39 @@ const GameScreen = props => {
             </View>
         </View>
     )
+
+    if (window.width < window.height) {
+        return (
+            <View style={styles.screen_primary}>
+                <View style={{ flex: window.height > 600 ? 1 : 0 }} />
+                {content_primary}
+                {content_secondary}
+            </View>
+        )
+    } else {
+        return (
+            <View style={{...styles.screen_primary, flexDirection: 'row'}}>
+                {content_primary}
+                {content_secondary}
+            </View>
+        )
+    }
+
+
 };
 
 const styles = StyleSheet.create({
-    screen: {
-        flex: 1,
-        padding: 10,
+    screen_primary: {
+        flex: 5,
+        paddingVertical: 10,
         alignItems: 'center',
         // backgroundColor: colors.bg_powder,
+    },
+    screen_secondary: {
+        flex: 5,
+        paddingVertical: 10,
+        alignItems: 'center',
+        width: '100%',
     },
     buttonsCard: {
         flexDirection: 'row',
@@ -112,7 +139,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     listContainer: {
-        flex: deviceWidth > 380 ? 5 : 10,
+        flex: 5,  // overwritten in code (screen dimensions considered)
         borderRadius: 30,
         backgroundColor: colors.light,
         alignItems: 'center',
@@ -146,11 +173,11 @@ const styles = StyleSheet.create({
     },
     topText: {
         fontFamily: 'sacramento',
-        fontSize: deviceWidth > 380 ? 40 : 30
+        fontSize: 40,  // overwritten in code (screen dimensions considered)
     },
     guessingHistoryText: {
         fontFamily: 'sacramento',
-        fontSize: deviceWidth > 380 ? 36 : 32,
+        fontSize: 36,  // overwritten in code (screen dimensions considered)
         borderBottomWidth: 1,
         borderColor: colors.dark,
     },
